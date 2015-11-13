@@ -47,6 +47,7 @@
 #include "hint-data.h"
 #include "performance.h"
 #include "power-common.h"
+#include "power-feature.h"
 
 static int saved_dcvs_cpu0_slack_max = -1;
 static int saved_dcvs_cpu0_slack_min = -1;
@@ -440,8 +441,10 @@ void set_feature(struct power_module *module, feature_t feature, int state)
         char tmp_str[NODE_MAX];
         snprintf(tmp_str, NODE_MAX, "%d", state);
         sysfs_write(TAP_TO_WAKE_NODE, tmp_str);
+        return;
     }
 #endif
+    set_device_specific_feature(module, feature, state);
 }
 
 struct power_module HAL_MODULE_INFO_SYM = {
